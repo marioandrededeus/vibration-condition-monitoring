@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# Do not version large data or generated artifacts
+data/
+reports/
+*.png
+*.parquet
