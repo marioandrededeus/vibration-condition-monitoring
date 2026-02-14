@@ -8,3 +8,6 @@ data/
 reports/
 *.png
 *.parquet
+
+*.egg-info/
+
