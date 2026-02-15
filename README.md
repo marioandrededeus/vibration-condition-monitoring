@@ -1,4 +1,5 @@
-# Condition Monitoring – Frequency-domain Carpet Detection and Looseness Classification
+
+# Vibration Condition Monitoring – Frequency-Domain Carpet Detection and Looseness Classification
 
 ## Overview
 
@@ -7,14 +8,34 @@ This repository implements a vibration-based condition monitoring pipeline focus
 - **Part 1:** Frequency-domain carpet detection  
 - **Part 2:** Looseness classification using metadata and machine learning  
 
-The approach combines physical signal modeling (DSP) and supervised learning, with emphasis on:
+The approach combines physical signal modeling (DSP) and supervised learning, with emphasis on reproducibility, structured validation, and physically interpretable decisions.
 
-- Sampling validation  
-- Reproducible spectral analysis  
-- Structured data validation via Pydantic schemas  
-- Clean project organization  
+Before implementing detection logic, signal consistency and spectral assumptions are validated to ensure that modeling decisions are grounded in signal processing fundamentals.
 
-The goal is to ensure that signal processing decisions are physically grounded before applying machine learning techniques.
+---
+
+## Scientific Motivation
+
+## Scientific Motivation
+
+The broadband detection methodology adopted in this repository is conceptually inspired by prior research on lubrication-related bearing faults.
+
+Xu et al., *“Vibration-based identification of lubrication starved bearing conditions”* (Mechanical Systems and Signal Processing), demonstrate that starved lubrication leads to increased broadband energy and elevated RMS levels. However, their study also shows that RMS and global vibration levels vary significantly with rotational speed, making purely time-domain metrics unreliable when speed is not controlled.
+
+In other words:
+
+- Lubrication degradation increases broadband spectral energy.
+- Rotational speed variations can produce similar increases in global vibration levels.
+- Without speed information, distinguishing operational effects from degradation becomes less precise if relying solely on time-domain statistics.
+
+Because rotational speed is not provided in this dataset, the methodology prioritizes:
+
+- Frequency-domain analysis,
+- Relative noise-floor modeling in dB,
+- Broadband elevation detection above 1000 Hz,
+- Robust baseline estimation rather than absolute energy thresholds.
+
+This approach transfers the conceptual insight from Xu et al., that broadband spectral behavior is more robust than raw RMS, while acknowledging the limitation imposed by missing operational variables. 
 
 ---
 
@@ -22,7 +43,7 @@ The goal is to ensure that signal processing decisions are physically grounded b
 
 ```
 
-tractian-condition-monitoring/
+vibration-condition-monitoring/
 │
 ├── README.md
 ├── pyproject.toml
@@ -45,9 +66,53 @@ tractian-condition-monitoring/
 
 ---
 
+## Part 1 – Carpet Detection Strategy
+
+Carpet regions are modeled as:
+
+- Broadband spectral elevation  
+- Persistent increase in spectral noise floor  
+- Occurrence in the frequency region above 1000 Hz  
+
+Detection pipeline:
+
+1. Validate sampling consistency.
+2. Estimate PSD using Welch’s method.
+3. Restrict analysis to frequencies ≥ 1000 Hz.
+4. Estimate robust spectral baseline using rolling median in dB.
+5. Detect regions exceeding baseline by a relative threshold.
+6. Enforce minimum bandwidth constraints.
+
+This approach prioritizes interpretability and physical consistency over heuristic peak detection.
+
+---
+
+## Part 2 – Looseness Classification
+
+The second stage focuses on supervised classification using:
+
+- Metadata-driven axis mapping  
+- Time-domain and frequency-domain feature extraction  
+- Baseline model comparison  
+- Structured prediction interfaces via Pydantic  
+
+The objective is to combine domain knowledge and statistical modeling while maintaining reproducibility.
+
+---
+
+## Design Principles
+
+- Separate physical signal validation from machine learning.
+- Avoid absolute thresholds when signal energy varies across samples.
+- Use relative spectral elevation for broadband detection.
+- Maintain modular and deployable project structure.
+- Centralize spectral computation for consistency across notebooks and modules.
+
+---
+
 ## Environment Setup
 
-Create and activate a virtual environment (Windows example):
+Create and activate virtual environment (Windows example):
 
 ```
 
@@ -56,7 +121,7 @@ tractianenv\Scripts\activate
 
 ```
 
-Install the project in editable mode:
+Install project in editable mode:
 
 ```
 
@@ -65,70 +130,13 @@ python -m pip install -e ".[notebook]"
 
 ```
 
-This ensures:
-
-- Proper package import from `src/`
-- Reproducible dependency management
-- Consistent spectral computation between notebooks and modules
-
 ---
 
-## Part 1 – Carpet Detection Strategy
+## References
 
-The carpet phenomenon is modeled as:
+Xu, X., Liao, X., Zhou, T., He, Z., & Hu, H.  
+“Vibration-based identification of lubrication starved bearing conditions.”  
+Measurement, 226:114156 (2024)  
+https://doi.org/10.1016/j.measurement.2024.114156
 
-- Broadband energy elevation
-- Persistent increase in spectral noise floor
-- Occurrence in the frequency region above 1000 Hz
-
-Methodological steps:
-
-1. Validate time axis consistency and sampling rate.
-2. Estimate PSD using Welch's method.
-3. Restrict analysis to frequencies ≥ 1000 Hz.
-4. Estimate a robust noise floor (rolling median in dB).
-5. Detect regions where PSD exceeds the baseline by a relative threshold.
-6. Enforce minimum bandwidth and non-overlapping region constraints.
-
-This approach prioritizes physical interpretability and robustness over heuristic peak detection.
-
----
-
-## Part 2 – Looseness Classification
-
-The second stage focuses on supervised classification using:
-
-- Metadata-driven axis mapping (horizontal, vertical, axial)
-- Time-domain and frequency-domain feature extraction
-- Baseline model comparison
-- Structured prediction interface via Pydantic models
-
-The objective is to combine domain knowledge and statistical modeling while maintaining reproducibility.
-
----
-
-## Design Principles
-
-- Separate physical signal validation from ML modeling.
-- Avoid absolute thresholds when signal energy varies.
-- Use relative spectral elevation (dB above baseline) for carpet detection.
-- Keep the repository deployable and modular.
-- Maintain reproducibility through controlled PSD parameters.
-
----
-
-## Notes
-
-- Raw datasets are not versioned.
-- External case materials and reference papers are excluded from the repository.
-- All signal processing assumptions are validated in the initial notebook before modeling.
-
----
-
-## Status
-
-Current progress:
-
-- Signal validation and PSD sanity checks implemented.
-- Structured schemas and loaders implemented.
-- Baseline carpet detection model under development.
+This work provides conceptual grounding for frequency-domain broadband analysis as a robust alternative to purely time-domain metrics.
