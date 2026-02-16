@@ -1,13 +1,3 @@
-Perfeito. Abaixo está o **README completo revisado**, já incorporando:
-
-* ✔ Ajuste `loaders.py`
-* ✔ Bloco físico explícito sobre looseness
-* ✔ Refinamento técnico do sampling-rate section
-* ✔ Pequeno upgrade de linguagem (mais executivo e preciso)
-* ✔ Narrativa mais fluida
-
-Você pode substituir o README atual por este.
-
 ---
 
 # Vibration Condition Monitoring – Frequency-Domain Carpet Detection and Looseness Classification
