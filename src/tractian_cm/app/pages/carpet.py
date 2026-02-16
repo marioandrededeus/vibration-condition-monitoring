@@ -9,6 +9,8 @@ from tractian_cm.app.ui_shared import download_json_button, save_uploaded_to_tem
 from tractian_cm.pipelines.fft_carpet import FFTCarpetConfig, batch_analyze
 from tractian_cm.viz.plotly_fft import fft_clusters_figure
 from tractian_cm.app.ui_shared import load_uploads_to_temp_paths  # add import at top
+from tractian_cm.io.loaders import load_part1_wave_csv
+
 
 
 def _traffic_light(
@@ -119,7 +121,34 @@ def render_carpet() -> None:
         return
 
 
-    batch, samples_sorted, artifacts = batch_analyze(paths, cfg)
+    # EN: Validate inputs file-by-file to avoid crashing the whole app on a single bad CSV.
+    valid_paths: list[Path] = []
+    invalid_files: list[str] = []
+
+    for p in paths:
+        try:
+            # EN: fast schema check; will raise ValueError if columns are missing
+            _wave, _fs = load_part1_wave_csv(p)
+            valid_paths.append(p)
+        except ValueError as e:
+            msg = str(e)
+            if "Missing required columns" in msg and "['data', 't']" in msg:
+                invalid_files.append(basename_map.get(p.name, p.name))
+            else:
+                # EN: treat any ValueError as invalid input, but keep the message available for debugging
+                invalid_files.append(basename_map.get(p.name, p.name))
+
+    if invalid_files:
+        st.error(
+            "Some files do not match the required CSV schema. Expected columns: ['data', 't'].\n\n"
+            "Invalid files:\n- " + "\n- ".join(invalid_files)
+        )
+
+    if not valid_paths:
+        st.stop()
+
+    # EN: Proceed only with valid files
+    batch, samples_sorted, artifacts = batch_analyze(valid_paths, cfg)
 
     # EN: replace temp basenames with original upload names (UI + export)
     renamed_samples = [s.model_copy(update={"file_name": basename_map.get(s.file_name, s.file_name)}) for s in samples_sorted]
