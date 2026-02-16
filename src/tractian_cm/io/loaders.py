@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, Optional
+from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -38,46 +38,54 @@ def load_part1_wave_csv(path: Path) -> tuple[Wave, float]:
     wave = Wave(time=time.tolist(), signal=signal.tolist())
     return wave, fs
 
+
 class LoaderError(ValueError):
+    """Raised when a CSV cannot be loaded or validated."""
     pass
 
 
 @dataclass(frozen=True)
 class RawTriAxial:
+    """
+    Normalized raw tri-axial waveform for Part 2.
+
+    Always returns:
+      - t (seconds)
+      - axisX/axisY/axisZ (acceleration in g)
+      - fs_est inferred from time vector
+    """
     t: np.ndarray
     axisX: np.ndarray
     axisY: np.ndarray
     axisZ: np.ndarray
     fs_est: float
     n_samples: int
-    schema: str  # "part2_data" or "part2_test"
+    schema: str  # "part2_data" | "part2_test"
 
 
-def _estimate_fs(t: np.ndarray) -> float:
-    if t.ndim != 1 or len(t) < 3:
-        raise LoaderError("Time vector must be 1D with at least 3 points.")
-    dt = np.diff(t)
-    if np.any(~np.isfinite(dt)):
-        raise LoaderError("Non-finite dt found while estimating fs.")
-    median_dt = float(np.median(dt))
-    if median_dt <= 0:
-        raise LoaderError(f"Non-positive median dt: {median_dt}")
-    return 1.0 / median_dt
-
-
-def _is_monotonic_increasing(t: np.ndarray) -> bool:
-    return bool(np.all(np.diff(t) > 0))
-
-
-def load_raw_triaxial_part2_csv(path: str | Path) -> RawTriAxial:
+def load_raw_triaxial_part2_csv(
+    path: str | Path,
+    *,
+    uniform_tolerance: float = 1e-4,
+) -> RawTriAxial:
     """
     Loads a raw tri-axial vibration CSV from Part 2 datasets and normalizes schema to:
     t, axisX, axisY, axisZ.
 
-    Supported schemas:
-    - data/: columns: 'X-Axis', 'Ch1 Y-Axis', 'Ch2 Y-Axis', 'Ch3 Y-Axis'
-      where Ch1/Ch2/Ch3 correspond to axes X/Y/Z respectively (per case statement).
-    - test_data/: columns: 't', 'x', 'y', 'z' where x/y/z correspond to axes X/Y/Z respectively.
+    Supported schemas (per case statement):
+    - data/: columns:
+        'X-Axis' (time, s),
+        'Ch1 Y-Axis', 'Ch2 Y-Axis', 'Ch3 Y-Axis' (acc in g)
+      where Ch1/Ch2/Ch3 correspond to axes X/Y/Z respectively.
+    - test_data/: columns:
+        't' (time, s),
+        'x', 'y', 'z' (acc in g) corresponding to axes X/Y/Z.
+
+    Validations:
+    - strictly increasing time
+    - approximately uniform sampling (tolerance configurable)
+    - finite values, consistent lengths
+    - fs_est inferred from time vector
     """
     path = Path(path)
     if not path.exists():
@@ -86,10 +94,8 @@ def load_raw_triaxial_part2_csv(path: str | Path) -> RawTriAxial:
     df = pd.read_csv(path)
     cols = set(df.columns)
 
-    # Schema A: data/
-    schema_a = {"X-Axis", "Ch1 Y-Axis", "Ch2 Y-Axis", "Ch3 Y-Axis"}
-    # Schema B: test_data/
-    schema_b = {"t", "x", "y", "z"}
+    schema_a = {"X-Axis", "Ch1 Y-Axis", "Ch2 Y-Axis", "Ch3 Y-Axis"}  # data/
+    schema_b = {"t", "x", "y", "z"}  # test_data/
 
     if schema_a.issubset(cols):
         t = df["X-Axis"].to_numpy(dtype=float)
@@ -106,23 +112,28 @@ def load_raw_triaxial_part2_csv(path: str | Path) -> RawTriAxial:
     else:
         raise LoaderError(
             f"Unsupported CSV schema in {path.name}. "
-            f"Columns={list(df.columns)}. Expected either {sorted(schema_a)} or {sorted(schema_b)}"
+            f"Columns={list(df.columns)}. Expected either {sorted(schema_a)} or {sorted(schema_b)}."
         )
 
+    # Finite checks
     if not np.all(np.isfinite(t)):
         raise LoaderError(f"Non-finite time values found in {path.name}")
-
-    if not _is_monotonic_increasing(t):
-        raise LoaderError(f"Time vector is not strictly increasing in {path.name}")
-
     for name, arr in [("axisX", axisX), ("axisY", axisY), ("axisZ", axisZ)]:
         if not np.all(np.isfinite(arr)):
             raise LoaderError(f"Non-finite values found in {name} for {path.name}")
 
-    fs_est = _estimate_fs(t)
+    # Length checks
     n_samples = int(len(t))
     if any(len(arr) != n_samples for arr in [axisX, axisY, axisZ]):
         raise LoaderError(f"Axis arrays have different length than time in {path.name}")
+
+    # Physical time-axis checks (reuse common utilities)
+    try:
+        assert_strictly_increasing(t)
+        assert_uniform_sampling(t, tolerance=uniform_tolerance)
+        fs_est = float(infer_sampling_rate(t))
+    except Exception as e:
+        raise LoaderError(f"Time-axis validation failed for {path.name}: {e}") from e
 
     return RawTriAxial(
         t=t,
