@@ -1,3 +1,13 @@
+Perfeito. Abaixo está o **README completo revisado**, já incorporando:
+
+* ✔ Ajuste `loaders.py`
+* ✔ Bloco físico explícito sobre looseness
+* ✔ Refinamento técnico do sampling-rate section
+* ✔ Pequeno upgrade de linguagem (mais executivo e preciso)
+* ✔ Narrativa mais fluida
+
+Você pode substituir o README atual por este.
+
 ---
 
 # Vibration Condition Monitoring – Frequency-Domain Carpet Detection and Looseness Classification
@@ -16,8 +26,8 @@ The project combines:
 * Digital Signal Processing (DSP)
 * Physically grounded modeling
 * Structured metadata integration
-* Machine learning validation
-* Modular, production-oriented design
+* Supervised learning validation
+* Modular, production-oriented architecture
 
 Before implementing detection or classification logic, signal consistency and spectral assumptions are validated to ensure modeling decisions are grounded in signal processing fundamentals.
 
@@ -25,14 +35,14 @@ Before implementing detection or classification logic, signal consistency and sp
 
 # Scientific Motivation
 
-The broadband detection methodology adopted in this repository is conceptually inspired by prior research on lubrication-related bearing faults.
+The broadband detection methodology adopted in Part 1 is conceptually inspired by prior research on lubrication-related bearing faults.
 
 Xu et al., *“Vibration-based identification of lubrication starved bearing conditions”* (Mechanical Systems and Signal Processing), demonstrate that starved lubrication leads to increased broadband energy and elevated RMS levels. However, their study also shows that RMS and global vibration levels vary significantly with rotational speed, making purely time-domain metrics unreliable when speed is not controlled.
 
-In other words:
+In summary:
 
 * Lubrication degradation increases broadband spectral energy.
-* Rotational speed variations can produce similar increases in global vibration levels.
+* Rotational speed variations can produce similar increases in vibration levels.
 * Without speed information, distinguishing operational effects from degradation becomes less precise if relying solely on time-domain statistics.
 
 Because rotational speed is not provided in Part 1 of this dataset, the methodology prioritizes:
@@ -40,9 +50,9 @@ Because rotational speed is not provided in Part 1 of this dataset, the methodol
 * Frequency-domain analysis
 * Relative noise-floor modeling in dB
 * Broadband elevation detection above 1000 Hz
-* Robust baseline estimation rather than absolute energy thresholds
+* Robust baseline estimation instead of absolute thresholds
 
-This approach transfers the conceptual insight from Xu et al., that broadband spectral behavior is more robust than raw RMS, while acknowledging the limitation imposed by missing operational variables.
+This transfers the conceptual insight from Xu et al. that broadband spectral behavior is more robust than raw RMS, while acknowledging dataset limitations.
 
 ---
 
@@ -58,7 +68,7 @@ vibration-condition-monitoring/
 ├── src/
 │   └── tractian_cm/
 │       ├── io/               # Data loading and validation
-│       │   ├── loader.py
+│       │   ├── loaders.py
 │       │   └── metadata_part2.py
 │       │
 │       ├── dsp/              # Spectral analysis utilities (FFT, PSD, etc.)
@@ -67,6 +77,8 @@ vibration-condition-monitoring/
 │       │
 │       └── part2/            # Looseness classification pipeline
 │           ├── sample_index.py
+│           ├── orientation.py
+│           ├── features.py
 │           └── (modeling modules to be added)
 │
 ├── notebooks/
@@ -119,39 +131,80 @@ Unlike Part 1, Part 2 introduces:
 * Rotational speed (rpm) information
 * Supervised modeling framework
 
+### Physical Motivation for Feature Design
+
+Structural looseness is known to generate:
+
+* Low-frequency structural excitation
+* Harmonic amplification at multiples of the rotational frequency (1×, 2×, 3×)
+* Possible sub-harmonic components (e.g., 0.5×) due to nonlinear mechanical contact
+
+Feature engineering is therefore designed to capture:
+
+* Rotation-synchronous components tied to rpm
+* Low-frequency band energy ratios
+* Harmonic amplitude ratios
+* Directionally aggregated structural responses
+
+This ensures that modeling remains physically interpretable and not purely statistical.
+
 ---
 
 ## Phase-Based Development Strategy (Part 2)
 
-### Phase 1 – Data Preparation (Commit 1)
+### Phase 1 – Data Preparation
 
 Implemented in:
 
-* `src/tractian_cm/io/metadata_part2.py`
-* `src/tractian_cm/part2/sample_index.py`
-* `notebooks/01_part2_pipeline.ipynb`
-* `reports/part2/00_plan.md`
+* `metadata_part2.py`
+* `sample_index.py`
+* `loaders.py`
+* `orientation.py`
+* `features.py`
 
 This phase includes:
 
 * Parsing and validating metadata (`part_3_metadata.csv`, `test_metadata.csv`)
-* Strict validation of orientation mapping:
-
-  * Keys must be `axisX`, `axisY`, `axisZ`
-  * Values must be exactly one of each: `horizontal`, `vertical`, `axial`
-* Construction of a unified **samples index**, including:
-
-  * `train_labeled`
-  * `train_unlabeled`
-  * `test`
-
-No signal modeling or feature extraction is introduced in this phase.
+* Strict validation of orientation mapping
+* Construction of unified sample index
+* Resolution-aware spectral feature extraction
+* Generation of a structured feature matrix
 
 The objective is to ensure:
 
 * Schema consistency
 * Correct metadata integration
 * Clean separation between I/O and modeling logic
+* Physically grounded feature extraction
+
+---
+
+### Sampling Rate Considerations
+
+Sanity checks revealed a structural difference between training and test datasets:
+
+* Training set: ~4 kHz sampling rate, 2048 samples (~0.5 s window)
+* Test set: ~8 kHz sampling rate, 16384 samples (~2.0 s window)
+
+This implies differences in:
+
+* Spectral resolution (Δf = fs / N)
+* Nyquist frequency
+* Frequency coverage
+* Time-window duration
+
+High-frequency broadband metrics are therefore not directly comparable across splits.
+
+### Mitigation Strategy
+
+To ensure robustness and cross-dataset generalization:
+
+* Harmonic detection is resolution-aware (tolerance ≥ 2 × spectral bin width)
+* Features are anchored to physical rotational frequency (rpm-based)
+* Low-frequency band ratios are prioritized
+* Relative harmonic metrics are preferred over absolute broadband energy
+
+Feature extraction is therefore **frequency-anchored rather than bin-index dependent**, ensuring comparability despite sampling mismatch.
 
 ---
 
@@ -164,9 +217,7 @@ Planned deliverables:
 * Univariate feature analysis
 * Bivariate feature exploration
 * Spectral comparison between healthy and looseness samples
-* Insight-driven feature selection
-
-All feature extraction will reuse centralized DSP utilities.
+* Insight-driven feature refinement
 
 ---
 
@@ -174,10 +225,10 @@ All feature extraction will reuse centralized DSP utilities.
 
 Planned modeling strategy:
 
-* Physics-informed heuristics (baseline)
+* Physics-informed baseline heuristics
 * Logistic Regression
 * Random Forest
-* Optional deep learning (Keras/TensorFlow) if justified by data volume
+* Optional deep learning (Keras/TensorFlow) if justified
 
 Validation strategy:
 
@@ -188,7 +239,7 @@ Validation strategy:
 * Threshold calibration
 * Optional probability calibration
 
-Model interface must follow the provided template:
+Model interface must follow:
 
 ```python
 class LoosenessModel:
@@ -202,13 +253,14 @@ The model will receive **orientation-mapped signals**, not raw axis signals.
 
 # Design Principles
 
-* Separate physical signal validation from machine learning.
-* Avoid absolute thresholds when signal energy varies across samples.
-* Use relative spectral elevation for broadband detection.
-* Maintain modular and deployable project structure.
-* Centralize spectral computation for consistency across notebooks and modules.
-* Enforce strict metadata validation before model execution.
-* Ensure that webapp integration reuses the same feature pipeline as training.
+* Separate physical signal validation from machine learning
+* Avoid absolute thresholds when signal energy varies
+* Use rotation-anchored features instead of bin-indexed features
+* Prefer relative spectral metrics over raw amplitudes
+* Maintain modular, production-oriented structure
+* Centralize spectral computation
+* Enforce strict metadata validation
+* Ensure feature pipeline parity between training and deployment
 
 ---
 
@@ -238,5 +290,26 @@ Measurement, 226:114156 (2024)
 [https://doi.org/10.1016/j.measurement.2024.114156](https://doi.org/10.1016/j.measurement.2024.114156)
 
 This work provides conceptual grounding for frequency-domain broadband analysis as a robust alternative to purely time-domain metrics.
+
+Randall, R. B.
+Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications.
+John Wiley & Sons (2011)
+https://doi.org/10.1002/9780470977668
+
+Randall provides a comprehensive treatment of harmonic amplification, sub-harmonic components, and nonlinear vibration signatures associated with structural looseness and other rotating machinery faults.
+
+---
+
+# Final Assessment
+
+The repository emphasizes:
+
+* Physical interpretability
+* Resolution-aware spectral modeling
+* Domain-shift awareness
+* Modular architecture
+* Reproducible validation
+
+The goal is not merely to build a classifier, but to construct a physically grounded and production-ready vibration monitoring pipeline.
 
 ---
