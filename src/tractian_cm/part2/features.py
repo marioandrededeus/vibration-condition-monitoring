@@ -170,15 +170,17 @@ def extract_looseness_features_single_wave(
     amp_1x = _peak_amp_near(f, amp, f_rot, tol)
     feats["amp_1x"] = amp_1x
 
+    eps = 1e-8
+
     for k in range(2, params.max_harmonic + 1):
         ak = _peak_amp_near(f, amp, k * f_rot, tol)
         feats[f"amp_{k}x"] = ak
-        feats[f"amp_{k}x_over_1x"] = (ak / amp_1x) if amp_1x > 0 else 0.0
+        feats[f"amp_{k}x_over_1x"] = ak / (amp_1x + eps)
 
     if params.include_subharmonic:
         a05 = _peak_amp_near(f, amp, 0.5 * f_rot, tol)
         feats["amp_0_5x"] = a05
-        feats["amp_0_5x_over_1x"] = (a05 / amp_1x) if amp_1x > 0 else 0.0
+        feats["amp_0_5x_over_1x"] = a05 / (amp_1x + eps)
 
     # --- Simple time-domain impulsiveness (optional but helpful)
     # These can capture intermittent contact due to looseness.
