@@ -17,9 +17,16 @@ class CarpetDetectorConfig:
     """
     min_freq_hz: float = 1000.0
     threshold_db: float = 4.0
-    median_window_bins: int = 21  # EN: must be odd
-    min_region_width_hz: float = 50.0
+    median_window_bins: int = 61  # EN: more rigid baseline to avoid tracking broad structures
+    min_region_width_hz: float = 200.0
     welch: WelchConfig = WelchConfig()
+
+    # EN: Detection mode
+    mode: str = "band"  # "point" or "band"
+
+    # EN: Band-consistency parameters (broadband vs isolated peaks)
+    band_width_hz: float = 200.0
+    frac_min: float = 0.30
 
 
 def _rolling_median(x: np.ndarray, window: int) -> np.ndarray:
@@ -92,7 +99,22 @@ def detect_carpet_regions(wave: Wave, fs: float, cfg: CarpetDetectorConfig = Car
     baseline = _rolling_median(p_band, cfg.median_window_bins)
     delta_db = p_band - baseline
 
-    mask = delta_db > cfg.threshold_db
+    if cfg.mode not in {"point", "band"}:
+        raise ValueError("cfg.mode must be 'point' or 'band'")
+
+    if cfg.mode == "point":
+        # EN: Pointwise threshold (prone to peak-driven detections)
+        mask = delta_db > cfg.threshold_db
+    else:
+        # EN: Band-consistency threshold (targets broadband elevation)
+        df = float(np.median(np.diff(f_band)))
+        bins_per_band = max(1, int(round(cfg.band_width_hz / df)))
+
+        above = (delta_db > cfg.threshold_db).astype(float)
+        frac = np.convolve(above, np.ones(bins_per_band), mode="same") / bins_per_band
+
+        mask = frac >= cfg.frac_min
+
     raw_regions = _mask_to_regions(f_band, mask)
 
     out: List[CarpetRegion] = []
