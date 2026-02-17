@@ -211,33 +211,88 @@ Planned deliverables:
 
 ---
 
-### Phase 3 – Modeling and Validation (Upcoming)
+### Phase 3 – Modeling and Validation
 
-Planned modeling strategy:
+Three modeling strategies were evaluated under a strict validation protocol:
 
-* Physics-informed baseline heuristics
-* Logistic Regression
-* Random Forest
-* Optional deep learning (Keras/TensorFlow) if justified
+1. Physics-informed heuristic (2×/1× harmonic ratio threshold)
+2. Logistic Regression (linear statistical model)
+3. Random Forest (nonlinear ensemble model with RandomizedSearchCV)
 
-Validation strategy:
+All models were evaluated using:
 
-* Group-aware cross-validation (e.g., by sensor_id)
-* Confusion matrix
-* ROC AUC
-* PR AUC
-* Threshold calibration
-* Optional probability calibration
+- Stratified 70/30 train-test split
+- 5-fold stratified cross-validation on training data
+- Threshold optimization performed exclusively on training folds
+- Final evaluation on unseen holdout data
+- No preprocessing steps fit using test data (data leakage prevention)
 
-Model interface must follow:
+---
 
-```python
-class LoosenessModel:
-    def predict(self, wave_hor, wave_ver, wave_axi) -> bool
-    def score(self, wave_hor, wave_ver, wave_axi) -> float
-```
+### Model Comparison (Holdout 30%)
 
-The model will receive **orientation-mapped signals**, not raw axis signals.
+Key observations:
+
+- The physics-informed baseline achieved F1 performance comparable to statistical models.
+- Logistic Regression improved ranking metrics (ROC-AUC and PR-AUC).
+- Random Forest significantly improved ROC-AUC and PR-AUC, indicating stronger probabilistic discrimination.
+- F1 gains from Random Forest over the baseline were marginal, confirming that harmonic amplification is the dominant discriminative factor in this dataset.
+
+---
+
+### Metric Selection Rationale
+
+From an operational perspective, recall is the most critical metric.
+
+Missing a structural looseness condition (false negative) may:
+
+- Lead to progressive mechanical degradation,
+- Cause secondary failures,
+- Generate significant financial losses,
+- Reduce trust in the predictive system.
+
+In contrast, a false positive typically results in inspection without requiring equipment shutdown.
+
+However, optimizing recall alone can lead to degenerate solutions, particularly since the positive class (looseness=True) is the majority in this dataset.
+
+To prevent trivial classifiers, model selection prioritized:
+
+- F1-score (balanced precision/recall),
+- PR-AUC (robust under class imbalance),
+- Recall monitored as a safety-oriented constraint.
+
+---
+
+### Final Model Selection
+
+Although the physics-informed model is highly interpretable and already performs strongly, the Random Forest model:
+
+- Achieves superior ROC-AUC,
+- Achieves superior PR-AUC,
+- Captures nonlinear feature interactions,
+- Provides more robust probabilistic ranking.
+
+Given these advantages, the Random Forest model is selected for integration into the web application.
+
+---
+
+### Sensor-Level Generalization Considerations
+
+The feature `sensor_id` was not explicitly modeled in this stage.
+
+Different sensors may introduce:
+
+- Mounting variability,
+- Sensitivity differences,
+- Orientation mapping inconsistencies.
+
+Future improvements should consider:
+
+- Group-aware cross-validation (e.g., GroupKFold by sensor_id),
+- Cross-sensor robustness evaluation,
+- Sensor-level normalization strategies.
+
+This ensures that predictive performance generalizes beyond laboratory conditions.
 
 ---
 
