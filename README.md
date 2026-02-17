@@ -1,333 +1,239 @@
 # Vibration Condition Monitoring
 
-## Frequency-Domain Carpet Detection and Structural Looseness Diagnosis
+## Broadband Carpet Detection & Structural Looseness Diagnosis
 
 ---
 
-## Overview
+# Executive Summary
 
-This repository implements a vibration-based condition monitoring system structured as a two-stage analytical pipeline:
+This repository implements a two-stage vibration diagnostic system:
 
-* **Part 1:** Broadband “carpet” detection in the frequency domain
-* **Part 2:** Structural looseness diagnosis using rotation-synchronous harmonic behavior
+* **Part 1:** Broadband carpet detection in the frequency domain
+* **Part 2:** Structural looseness diagnosis using harmonic behavior
 
-The project combines:
+The solution prioritizes:
 
-* Digital Signal Processing (DSP)
-* Physics-informed feature engineering
-* Metadata integration and validation
-* Controlled supervised model benchmarking
-* Domain-shift awareness
-* Production-oriented architecture
-* Streamlit web application deployment
+* Physics-informed features over black-box modeling
+* Robustness under sampling-rate domain shift
+* Explicit bias investigation (rpm regime)
+* Deterministic and deployable architecture
 
-The objective is not merely to train a classifier, but to construct a **physically interpretable, resolution-aware, and deployable vibration monitoring solution**.
+Although tree-based models achieved slightly higher ROC-AUC, a multi-feature harmonic heuristic was selected for deployment due to interpretability, robustness, and lower operational complexity.
 
 ---
 
-# Scientific Motivation
-
-## Part 1 – Broadband Carpet Detection
-
-The broadband detection methodology is conceptually inspired by research on lubrication-related bearing faults.
-
-Xu et al., *“Vibration-based identification of lubrication starved bearing conditions”* (Measurement, 2024), demonstrate that lubrication starvation increases broadband spectral energy and RMS levels. However, RMS varies strongly with rotational speed, making purely time-domain metrics unreliable without speed control.
-
-Because rotational speed is not provided in Part 1:
-
-* Detection prioritizes frequency-domain analysis
-* Relative spectral elevation (in dB) is used instead of absolute RMS
-* Carpet regions are detected above 1000 Hz
-* A robust rolling-median baseline is estimated
-
-This ensures robustness despite missing operational variables.
-
----
-
-# Repository Structure
+# Solution Architecture
 
 ```
 vibration-condition-monitoring/
 │
-├── README.md
+├── streamlit_app.py
+├── requirements.txt
 ├── pyproject.toml
 │
 ├── notebooks/
-│ ├── 01_part1_sanity_and_psd.ipynb
-│ └── 01_part2_pipeline.ipynb
+│   ├── 01_part1_sanity_and_psd.ipynb
+│   └── 01_part2_pipeline.ipynb
 │
-└── src/
-└── tractian_cm/
-├── io/
-│ ├── loaders.py
-│ └── metadata_part2.py
+├── reports/
+│   └── report.md
 │
-├── dsp/
-│ └── (spectral utilities: FFT/PSD helpers)
-│
-├── part1/
-│ └── (carpet detection modules)
-│
-└── part2/
-├── sample_index.py
-├── orientation.py
-├── features.py
-└── (modeling / heuristic / artifacts)
+└── src/tractian_cm/
+    ├── io/
+    ├── dsp/
+    ├── part1/
+    ├── part2/
+    └── pipeline/
 ```
+
+The Streamlit application uses the same inference pipeline validated during model development.
 
 ---
 
-# Part 1 – Carpet Detection Strategy
+# Part 1 – Carpet Detection
 
-Carpet regions are modeled as:
+### Objective
 
-* Broadband spectral elevation
-* Persistent increase in spectral noise floor
-* Occurrence above 1000 Hz
+Detect broadband spectral elevation (“carpet”) above 1000 Hz without rotational speed information.
 
-### Detection Pipeline
+### Method
 
 1. Validate sampling consistency
-2. Estimate PSD using Welch’s method
-3. Restrict analysis to ≥ 1000 Hz
-4. Estimate rolling median baseline (dB)
-5. Detect spectral elevation above relative threshold
-6. Enforce minimum bandwidth constraints
+2. Compute PSD using Welch’s method
+3. Restrict to frequencies ≥ 1000 Hz
+4. Estimate rolling-median spectral baseline (dB)
+5. Detect sustained elevation above relative threshold
+6. Enforce minimum bandwidth
 
-This approach emphasizes interpretability over heuristic peak detection.
+### Rationale
+
+* RMS alone is unreliable without speed control.
+* Relative spectral elevation is more robust to operating variability.
+* Rolling baseline reduces sensitivity to narrow peaks.
 
 ---
 
 # Part 2 – Structural Looseness Diagnosis
 
-## Physical Context
+### Physical Expectation
 
-Structural looseness involves reduced clamping force in non-rotating components (e.g., motor bases, couplings, supports).
-
-Unlike lubrication faults (high-frequency broadband energy), looseness primarily modifies:
+Structural looseness alters:
 
 * System stiffness
-* Low-frequency structural response
-* Harmonic content of vibration
+* Harmonic response at 1×, 2×, 3×
+* Nonlinear contact → increased crest factor
 
-Expected vibration signatures include:
+### Domain Shift Identified
 
-* Increased amplitude at 1× rotational frequency
-* Harmonic amplification at 2× and 3×
-* Possible sub-harmonics (0.5×)
-* Increased crest factor due to nonlinear contact
+Train and test sets differ in:
 
----
+* Sampling rate
+* Signal duration
+* Spectral resolution
 
-## Sampling-Rate Domain Shift
+To prevent overfitting:
 
-Sanity checks revealed a structural difference between train and test datasets:
-
-| Split | Samples | fs (Hz) | Duration |
-| ----- | ------- | ------- | -------- |
-| Train | 2048    | ~4 kHz  | ~0.5 s   |
-| Test  | 16384   | ~8 kHz  | ~2.0 s   |
-
-This creates domain shift in:
-
-* Spectral resolution (Δf)
-* Nyquist frequency
-* Time window length
-
-### Mitigation Strategy
-
-Feature engineering was designed to be:
-
-* **Frequency-anchored** (harmonics tied to rpm)
-* Resolution-aware (tolerance ≥ 2 × spectral bin width)
-* Ratio-based (2×/1×, band ratios)
-* Physically interpretable
-
-This prevents overfitting to spectral resolution artifacts.
+* Harmonics are anchored to rpm
+* Frequency tolerance adapts to bin width
+* Ratios are used instead of absolute amplitudes
 
 ---
 
-# Exploratory Findings
+# Benchmarking
 
-## Inverted Class Imbalance
+Three approaches evaluated:
 
-Looseness represents ~67% of the dataset.
-Optimizing recall alone would lead to degenerate always-positive models.
-
-Model selection therefore prioritized:
-
-* F1-score
-* PR-AUC
-* Recall monitored as safety constraint
-
----
-
-## RPM Bias (1595 Regime)
-
-All samples at rpm=1595 were labeled looseness.
-
-This suggested:
-
-* Potential dataset bias
-* Hidden assembly conditions not represented by available features
-
-To investigate, models were evaluated in two scenarios:
-
-1. Full dataset
-2. Restricted dataset (rpm=1598 only)
-
----
-
-## Key Insight – Harmonic Interaction
-
-When restricting to rpm=1598:
-
-* Recall reached 1.0 across models
-* Feature importance shifted significantly
-* 2×/1× alone was insufficient
-* Crest factor and 3×/1× gained relevance
-
-This revealed that looseness behavior is captured through **combined harmonic amplification and nonlinear response**, not a single metric.
-
----
-
-# Model Benchmarking
-
-Three approaches were evaluated:
-
-1. Single-feature physics heuristic (2×/1× threshold)
+1. 2×/1× single-threshold heuristic
 2. Logistic Regression
 3. Random Forest (RandomizedSearchCV)
 
 Validation protocol:
 
-* Stratified 70/30 train-test split
-* 5-fold CV on training data
+* Stratified 70/30 split
+* 5-fold CV
 * Threshold tuning on training folds only
-* Strict data-leakage prevention
-* Final evaluation on unseen holdout
+* Strict leakage control
 
 ---
 
-# Final Model Selection
+# Final Model
 
-Although Random Forest achieved slightly higher ROC-AUC and PR-AUC, gains in F1 were marginal.
-
-A refined **multi-feature physics-informed heuristic**, combining:
+A multi-feature physics-informed heuristic combining:
 
 * 2×/1× harmonic ratio
 * 3×/1× harmonic ratio
 * Crest factor
+* Sigmoid-based soft scoring
 
-achieved performance comparable to Random Forest while offering:
+Selected for deployment due to:
 
+* Comparable F1 performance
 * Full interpretability
-* Direct physical meaning
+* Deterministic behavior
 * Lower computational cost
-* Simpler deployment
-* No black-box behavior
+* Ease of validation in industrial settings
 
-Given the objectives of robustness, transparency, and physical coherence, the enhanced heuristic model was selected for deployment.
-
-Random Forest remains as a benchmarking reference.
+Random Forest remains as benchmark reference.
 
 ---
 
-# Streamlit Web Application
+# Template Compliance
 
-A Streamlit application was implemented to demonstrate deployment readiness.
+The required model interfaces were implemented using `pydantic.BaseModel`:
 
-The app includes:
+* `Model.predict(sample: np.ndarray) -> int`
+* `LoosenessModel.predict(sample: np.ndarray, rpm: float) -> int`
+* `LoosenessModel.score(sample: np.ndarray, rpm: float) -> float`
 
-### Part 1
-
-* PSD visualization
-* Broadband carpet detection
-* Interactive signal analysis
-
-### Part 2
-
-* Tri-axial signal upload
-* Metadata parsing (orientation + rpm)
-* Physics-based feature extraction
-* Looseness prediction with probability score
-
-The same feature extraction pipeline used in training is reused in the app, ensuring consistency between research and deployment.
+These wrap the validated inference pipeline used in deployment.
 
 ---
 
-# Sensor-Level Considerations
+# Reproducing Results
 
-`sensor_id` was not explicitly modeled.
+## 1. Clone Repository
 
-Potential future improvements:
+```
+git clone https://github.com/marioandrededeus/vibration-condition-monitoring.git
+cd vibration-condition-monitoring
+```
 
-* Group-aware cross-validation (GroupKFold)
-* Cross-sensor robustness evaluation
-* Sensor-level normalization strategies
+## 2. Create Environment
 
-This ensures generalization beyond laboratory conditions.
+Windows:
+
+```
+python -m venv venv
+venv\Scripts\activate
+```
+
+Mac/Linux:
+
+```
+python -m venv venv
+source venv/bin/activate
+```
+
+## 3. Install Dependencies
+
+```
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+Pinned versions ensure deterministic builds.
+
+---
+
+## 4. Run Streamlit Application
+
+```
+streamlit run streamlit_app.py
+```
+
+---
+
+## 5. Reproduce Benchmarks
+
+* Part 1 exploratory validation:
+  `notebooks/01_part1_sanity_and_psd.ipynb`
+
+* Part 2 modeling and evaluation:
+  `notebooks/01_part2_pipeline.ipynb`
+
+All reported metrics originate from these notebooks.
+
+---
+
+# Outputs Included
+
+The repository contains:
+
+* Model comparison metrics
+* Harmonic interaction analysis
+* Domain-shift investigation
+* Short technical report (`reports/report.md`)
 
 ---
 
 # Design Principles
 
-* Physics before machine learning
-* Investigate bias before model selection
-* Avoid leakage at all stages
-* Prefer frequency-anchored features
-* Prioritize interpretability
-* Ensure training–deployment parity
-
----
-
-# Environment Setup
-
-Create environment:
-
-```
-python -m venv tractianenv
-tractianenv\Scripts\activate
-```
-
-Install:
-
-```
-python -m pip install --upgrade pip
-python -m pip install -e ".[notebook]"
-```
-
-Run app:
-
-```
-streamlit run app/streamlit_app.py
-```
+* Physics before ML
+* Investigate bias before optimizing
+* Avoid leakage
+* Prefer harmonic-anchored features
+* Maintain training–deployment parity
+* Ensure deterministic environments
 
 ---
 
 # References
 
-Xu, X., Liao, X., Zhou, T., He, Z., & Hu, H.
-“Vibration-based identification of lubrication starved bearing conditions.”
-Measurement, 226:114156 (2024)
-[https://doi.org/10.1016/j.measurement.2024.114156](https://doi.org/10.1016/j.measurement.2024.114156)
-
-Randall, R. B.
-*Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications.*
-John Wiley & Sons (2011)
-[https://doi.org/10.1002/9780470977668](https://doi.org/10.1002/9780470977668)
+Xu et al. (2024) – Lubrication starvation and broadband vibration
+Randall (2011) – Vibration-based Condition Monitoring
 
 ---
 
-# Final Assessment
+# Final Statement
 
-This project demonstrates:
-
-* Detection of dataset bias (rpm regime)
-* Domain-shift mitigation (sampling-rate differences)
-* Controlled statistical benchmarking
-* Physically grounded feature engineering
-* Interpretability-driven model selection
-* Production-level integration
-
-The outcome is not simply a classifier, but a **robust, physically interpretable, and deployable vibration diagnostic pipeline**.
+This solution delivers a bias-aware, domain-shift-robust, and production-ready vibration diagnostic pipeline, balancing statistical validation with physical interpretability.
