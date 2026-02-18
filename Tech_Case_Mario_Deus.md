@@ -263,7 +263,7 @@ Extracted features:
 
 Sensor distribution was balanced.
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure6_worst_sample.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure8_sensor_bias.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
 <p align="center"><em>Figure 8 —  Sensor bias</em></p>
 
@@ -272,6 +272,10 @@ However, rpm revealed structural correlation:
 - All 1595 rpm samples labeled looseness.
 - 1598 rpm contained both classes.
 
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure9_rpm_bias.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="400">
+</p> 
+<p align="center"><em>Figure 9 —  RPM bias</em></p>
 To prevent regime-based shortcut learning, evaluation was performed in two scenarios:
 
 - Full dataset  
@@ -285,8 +289,10 @@ A simple 2×/1× threshold achieved strong recall.
 
 This confirms harmonic amplification as the dominant looseness signature.
 
-**[Insert Figure 8 — Baseline Confusion Matrix]**  
-Recommended: `part2_baseline_confusion.png`
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure6_worst_sample.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+</p> 
+<p align="center"><em>Figure 10 —  B</em></p>
 
 ---
 
@@ -376,6 +382,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc0NjQ1OTU4NCwtNTQzODM5NjU0LDc0Mz
-IxODc2OV19
+eyJoaXN0b3J5IjpbODM0OTQ3NDEyLC01NDM4Mzk2NTQsNzQzMj
+E4NzY5XX0=
 -->
