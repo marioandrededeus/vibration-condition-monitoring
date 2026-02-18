@@ -15,12 +15,12 @@ Condition Monitoring Assessment
 Mario André de Deus  
 
 <br>
+<br>
+<br>
 
 March 2026  
 
 </div>
-
-<div style="page-break-after: always;"></div>
 <br>
 <br>
 <br>
@@ -410,7 +410,7 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTg3MjE3NTk0LC02NDI5NjkxMjUsMTkyNj
-UwNTQ1OCwtODk4MTg2MTY5LC01NDM4Mzk2NTQsNzQzMjE4NzY5
-XX0=
+eyJoaXN0b3J5IjpbMTU3NDYyNjYxOSwtNjQyOTY5MTI1LDE5Mj
+Y1MDU0NTgsLTg5ODE4NjE2OSwtNTQzODM5NjU0LDc0MzIxODc2
+OV19
 -->
