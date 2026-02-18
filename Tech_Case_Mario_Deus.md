@@ -312,9 +312,9 @@ Supervised models were evaluated using:
 Performance gains over baseline were moderate.
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure11_baseline_cm.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure12_reglog_cm.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
-<p align="center"><em>Figure 11 —  Baseline confusion matrices</em></p>
+<p align="center"><em>Figure 12 —  Logistic regression confusion matrices</em></p>
 
 ---
 
@@ -389,6 +389,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0MDI4NzYzMjMsLTU0MzgzOTY1NCw3ND
-MyMTg3NjldfQ==
+eyJoaXN0b3J5IjpbLTYwOTk3MjQ5MCwtNTQzODM5NjU0LDc0Mz
+IxODc2OV19
 -->
