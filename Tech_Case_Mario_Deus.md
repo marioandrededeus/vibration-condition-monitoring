@@ -354,9 +354,9 @@ This ensures:
 - Better operational robustness  
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure13_models_comparison.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure14_heurstic_feature_importance_.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
-<p align="center"><em>Figure 14 —  Models comparison</em></p>
+<p align="center"><em>Figure 14 —  Physical feature reliance</em></p>
 
 ---
 
@@ -399,6 +399,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1NTY4NTUyMDcsLTg5ODE4NjE2OSwtNT
+eyJoaXN0b3J5IjpbLTE2NTc2MDAxMzEsLTg5ODE4NjE2OSwtNT
 QzODM5NjU0LDc0MzIxODc2OV19
 -->
