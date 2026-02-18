@@ -373,7 +373,7 @@ Key insights from the investigation:
 <p align="center">
   <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure15_final_inference_.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
-<p align="center"><em>Figure 15 —  Test data prediction |</em></p>
+<p align="center"><em>Figure 15 —  Test data prediction - Score</em></p>
 
 ---
 
@@ -404,6 +404,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIzODQ0NTY0OSwtODk4MTg2MTY5LC01ND
+eyJoaXN0b3J5IjpbMTkyNjUwNTQ1OCwtODk4MTg2MTY5LC01ND
 M4Mzk2NTQsNzQzMjE4NzY5XX0=
 -->
