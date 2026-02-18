@@ -400,6 +400,8 @@ Part 2 delivers an interpretable looseness classifier grounded in physical vibra
 The outcome is not merely predictive — it is structurally diagnostic and deployment-ready.
 
 ---
+<br>
+<br>
 
 # References
 
@@ -410,7 +412,7 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU3NDYyNjYxOSwtNjQyOTY5MTI1LDE5Mj
-Y1MDU0NTgsLTg5ODE4NjE2OSwtNTQzODM5NjU0LDc0MzIxODc2
-OV19
+eyJoaXN0b3J5IjpbLTIxMTIyOTY3NjUsLTY0Mjk2OTEyNSwxOT
+I2NTA1NDU4LC04OTgxODYxNjksLTU0MzgzOTY1NCw3NDMyMTg3
+NjldfQ==
 -->
