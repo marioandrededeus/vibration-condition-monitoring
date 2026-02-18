@@ -1,31 +1,30 @@
 
-<div align="center" style="margin-top:120px;">
+# Vibration Condition Monitoring  
+## Frequency-Domain Carpet Detection and Structural Looseness Diagnosis  
 
-# VIBRATION-BASED CONDITION MONITORING  
-## Broadband Carpet Detection and Structural Looseness Diagnosis  
+---
 
-<br><br>
+### Technical Case Report  
 
-**Technical Case**  
-Condition Monitoring Assessment  
+---
 
-<br><br>
+### Interactive Application  
 
-**Author**  
-Mario André de Deus  
+A production-ready web interface for both diagnostic modules  
+is publicly available at:
 
-<br>
-<br>
-<br>
+https://vibration-monitoring.streamlit.app/
 
-March 2026  
+Deployed on **Streamlit Community Cloud**
 
-</div>
-<br>
-<br>
-<br>
-<br>
-<br>
+---
+
+**Author:** Mario André de Deus  
+**Submission:** Data Science Technical Assessment  
+**Date:** 2026  
+
+---
+
 ---
 
 # Abstract
@@ -412,7 +411,7 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMTIyOTY3NjUsLTY0Mjk2OTEyNSwxOT
-I2NTA1NDU4LC04OTgxODYxNjksLTU0MzgzOTY1NCw3NDMyMTg3
-NjldfQ==
+eyJoaXN0b3J5IjpbMTM1Mzc0MDkwNiwtMjExMjI5Njc2NSwtNj
+QyOTY5MTI1LDE5MjY1MDU0NTgsLTg5ODE4NjE2OSwtNTQzODM5
+NjU0LDc0MzIxODc2OV19
 -->
