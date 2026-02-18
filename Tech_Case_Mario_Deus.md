@@ -20,7 +20,7 @@ March 2026
 
 </div>
 
-
+\newpage
 
 
 # Abstract
@@ -405,6 +405,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTUwMTg1MzEyNCwxOTI2NTA1NDU4LC04OT
-gxODYxNjksLTU0MzgzOTY1NCw3NDMyMTg3NjldfQ==
+eyJoaXN0b3J5IjpbLTM5Mzc4NzU5LDE5MjY1MDU0NTgsLTg5OD
+E4NjE2OSwtNTQzODM5NjU0LDc0MzIxODc2OV19
 -->
