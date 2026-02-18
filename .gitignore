@@ -5,8 +5,6 @@ __pycache__/
 
 # Do not version large data or generated artifacts
 data/
-*.png
 *.parquet
-
 *.egg-info/
 
