@@ -6,7 +6,8 @@
 
 ### Technical Case Report  
 
-
+<br>
+<br>
 ---
 ### Github Repository
 https://github.com/marioandrededeus/vibration-condition-monitoring.git
@@ -409,7 +410,7 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MzE3MTAzNjMsLTIxMTIyOTY3NjUsLT
+eyJoaXN0b3J5IjpbLTEwNTgzNzkyMTcsLTIxMTIyOTY3NjUsLT
 Y0Mjk2OTEyNSwxOTI2NTA1NDU4LC04OTgxODYxNjksLTU0Mzgz
 OTY1NCw3NDMyMTg3NjldfQ==
 -->
