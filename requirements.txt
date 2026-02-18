@@ -9,3 +9,4 @@ plotly==6.5.2
 streamlit==1.54.0
 tqdm==4.67.3
 scikit-learn==1.8.0
+-e .
