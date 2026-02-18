@@ -370,6 +370,11 @@ Key insights from the investigation:
 4. Marginal ROC gains do not justify black-box deployment.
 5. Physics-informed heuristics can match ML performance with greater transparency.
 
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure15_final_inference_.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+</p> 
+<p align="center"><em>Figure 15 —  Test data prediction |</em></p>
+
 ---
 
 # 5. Conclusion
@@ -399,6 +404,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2NTc2MDAxMzEsLTg5ODE4NjE2OSwtNT
-QzODM5NjU0LDc0MzIxODc2OV19
+eyJoaXN0b3J5IjpbLTIzODQ0NTY0OSwtODk4MTg2MTY5LC01ND
+M4Mzk2NTQsNzQzMjE4NzY5XX0=
 -->
