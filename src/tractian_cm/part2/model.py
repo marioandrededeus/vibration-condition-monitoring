@@ -198,3 +198,70 @@ class LoosenessModel:
         else:
             ez = np.exp(z)
             return float(ez / (1.0 + ez))
+        
+    def explain(self, wave_hor: Wave, wave_ver: Wave, wave_axi: Wave) -> dict:
+        """
+        Returns intermediate physical features for transparency.
+        """
+        ...
+        return {
+            "ratio_2x_1x": r2,
+            "ratio_3x_1x": r3,
+            "crest_factor": crest
+        }
+
+    def explain(self, wave_hor: Wave, wave_ver: Wave, wave_axi: Wave) -> dict:
+        """
+        Returns physical intermediate features used for scoring.
+        """
+
+        # Recompute same internal quantities used in score()
+        t_h, x_h = self._to_np(wave_hor)
+        t_v, x_v = self._to_np(wave_ver)
+        t_a, x_a = self._to_np(wave_axi)
+
+        fs = float(np.median([
+            self._infer_fs(t_h),
+            self._infer_fs(t_v),
+            self._infer_fs(t_a),
+        ]))
+
+        if self.rpm is None:
+            raise ValueError("LoosenessModel requires 'rpm' in params.")
+
+        f_rot = float(self.rpm) / 60.0
+
+        tol = self._tol_hz(fs, f_rot)
+
+        # Harmonic amplitudes
+        a1 = self._harmonic_amp(x_h, fs, f_rot, tol)
+        a2 = self._harmonic_amp(x_h, fs, 2.0 * f_rot, tol)
+        a3 = self._harmonic_amp(x_h, fs, 3.0 * f_rot, tol)
+
+        b1 = self._harmonic_amp(x_v, fs, f_rot, tol)
+        b2 = self._harmonic_amp(x_v, fs, 2.0 * f_rot, tol)
+        b3 = self._harmonic_amp(x_v, fs, 3.0 * f_rot, tol)
+
+        c1 = self._harmonic_amp(x_a, fs, f_rot, tol)
+        c2 = self._harmonic_amp(x_a, fs, 2.0 * f_rot, tol)
+        c3 = self._harmonic_amp(x_a, fs, 3.0 * f_rot, tol)
+
+        amp_1x = float(np.median([a1, b1, c1]))
+        amp_2x = float(np.median([a2, b2, c2]))
+        amp_3x = float(np.median([a3, b3, c3]))
+
+        eps = 1e-12
+        r2 = amp_2x / (amp_1x + eps)
+        r3 = amp_3x / (amp_1x + eps)
+
+        crest = float(np.median([
+            self._crest_factor(x_h),
+            self._crest_factor(x_v),
+            self._crest_factor(x_a),
+        ]))
+
+        return {
+            "agg__amp_2x_over_1x_max": r2,
+            "agg__amp_3x_over_1x_max": r3,
+            "agg__crest_factor_max": crest,
+        }
