@@ -87,9 +87,9 @@ However, PSD smooths peak microstructure, which is central to the carpet definit
 The final detection strategy relies on FFT magnitude, which preserves exact peak positions.
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure2_psd_example.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="400">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure2_psdfft_example.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="4700">
 </p> 
-<p align="center"><em>Figure 2 — PSD (≥1000 Hz focus)</em></p>
+<p align="center"><em>Figure 2 — PSD (≥1000 Hz focus)FFT - Spectral representation</em></p>
 
 ---
 
@@ -126,7 +126,7 @@ CV = \frac{\sigma(\Delta f)}{\mu(\Delta f)}
 $$
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure3_psd_peak_spacing.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure3_psd_peak_spacing.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
 <p align="center"><em>Figure 3 — Regular vs Irregular Peak Spacing Comparison</em></p>
 
@@ -149,7 +149,7 @@ This ensures:
 - Physical interpretability  
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure4_clusterFFT.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure4_clusterFFT.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
 <p align="center"><em>Figure 4 — Clustered Regions Overlaid on FFT</em></p>
 
@@ -370,5 +370,5 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzQzMjE4NzY5XX0=
+eyJoaXN0b3J5IjpbLTU0MzgzOTY1NCw3NDMyMTg3NjldfQ==
 -->
