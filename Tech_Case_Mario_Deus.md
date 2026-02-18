@@ -337,9 +337,10 @@ This approach achieved performance comparable to Random Forest while offering:
 - Deterministic inference  
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure12_reglog_cm.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure13_models_comparison.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
-<p align="center"><em>Figure 12 —  Logistic regression confusion matrices</em></p>
+<p align="center"><em>Figure 13 —  Models comparison</em></p>
+
 ---
 
 ## 3.8 Final Inference Strategy
@@ -393,6 +394,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU2MjAyNTMyNiwtNTQzODM5NjU0LDc0Mz
+eyJoaXN0b3J5IjpbLTg5ODE4NjE2OSwtNTQzODM5NjU0LDc0Mz
 IxODc2OV19
 -->
