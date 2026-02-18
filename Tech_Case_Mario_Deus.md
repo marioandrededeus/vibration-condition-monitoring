@@ -353,6 +353,11 @@ This ensures:
 - Reduced shortcut learning  
 - Better operational robustness  
 
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure13_models_comparison.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+</p> 
+<p align="center"><em>Figure 14 —  Models comparison</em></p>
+
 ---
 
 # 4. Engineering Insights
@@ -394,6 +399,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg5ODE4NjE2OSwtNTQzODM5NjU0LDc0Mz
-IxODc2OV19
+eyJoaXN0b3J5IjpbLTE1NTY4NTUyMDcsLTg5ODE4NjE2OSwtNT
+QzODM5NjU0LDc0MzIxODc2OV19
 -->
