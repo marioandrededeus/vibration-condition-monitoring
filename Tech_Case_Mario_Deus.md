@@ -290,9 +290,14 @@ A simple 2×/1× threshold achieved strong recall.
 This confirms harmonic amplification as the dominant looseness signature.
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure6_worst_sample.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure10_baseline_treshold.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
-<p align="center"><em>Figure 10 —  B</em></p>
+<p align="center"><em>Figure 10 —  Baseline treshold</em></p>
+
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure11_baseline_cm.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+</p> 
+<p align="center"><em>Figure 11 —  Baseline confusion matrices</em></p>
 
 ---
 
@@ -306,8 +311,10 @@ Supervised models were evaluated using:
 
 Performance gains over baseline were moderate.
 
-**[Insert Figure 9 — ROC Curve Comparison]**  
-Recommended: `part2_roc_comparison.png`
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure11_baseline_cm.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+</p> 
+<p align="center"><em>Figure 11 —  Baseline confusion matrices</em></p>
 
 ---
 
@@ -382,6 +389,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODM0OTQ3NDEyLC01NDM4Mzk2NTQsNzQzMj
-E4NzY5XX0=
+eyJoaXN0b3J5IjpbLTE0MDI4NzYzMjMsLTU0MzgzOTY1NCw3ND
+MyMTg3NjldfQ==
 -->
