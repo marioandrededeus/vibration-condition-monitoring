@@ -252,8 +252,10 @@ Extracted features:
 - Crest factor  
 - Low-frequency band metrics  
 
-**[Insert Figure 7 — Harmonic Ratio Separation (2×/1× vs 3×/1×)]**  
-Recommended: `part2_harmonic_scatter.png`
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure6_worst_sample.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+</p> 
+<p align="center"><em>Figure 7 —  Sensitivity Analysis Across Clustering Tolerances</em></p>
 
 ---
 
@@ -370,5 +372,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU0MzgzOTY1NCw3NDMyMTg3NjldfQ==
+eyJoaXN0b3J5IjpbMTYwMTU1Mzc1NSwtNTQzODM5NjU0LDc0Mz
+IxODc2OV19
 -->
