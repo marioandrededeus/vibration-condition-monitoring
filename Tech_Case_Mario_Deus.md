@@ -7,6 +7,7 @@
 ### Technical Case Report  
 
 ---
+### Github Repository
 
 ### Interactive Application  
 
@@ -15,15 +16,12 @@ is publicly available at:
 
 https://vibration-monitoring.streamlit.app/
 
-Deployed on **Streamlit Community Cloud**
 
 ---
 
 **Author:** Mario André de Deus  
-**Submission:** Data Science Technical Assessment  
 **Date:** 2026  
 
----
 
 ---
 
@@ -411,7 +409,7 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM1Mzc0MDkwNiwtMjExMjI5Njc2NSwtNj
-QyOTY5MTI1LDE5MjY1MDU0NTgsLTg5ODE4NjE2OSwtNTQzODM5
-NjU0LDc0MzIxODc2OV19
+eyJoaXN0b3J5IjpbNjc3Mzg1OTQ4LC0yMTEyMjk2NzY1LC02ND
+I5NjkxMjUsMTkyNjUwNTQ1OCwtODk4MTg2MTY5LC01NDM4Mzk2
+NTQsNzQzMjE4NzY5XX0=
 -->
