@@ -22,6 +22,7 @@ March 2026
 
 
 
+
 # Abstract
 
 This technical case study presents a two-stage vibration analysis framework designed to address broadband carpet detection and structural looseness diagnosis.
@@ -404,6 +405,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTkyNjUwNTQ1OCwtODk4MTg2MTY5LC01ND
-M4Mzk2NTQsNzQzMjE4NzY5XX0=
+eyJoaXN0b3J5IjpbMTUwMTg1MzEyNCwxOTI2NTA1NDU4LC04OT
+gxODYxNjksLTU0MzgzOTY1NCw3NDMyMTg3NjldfQ==
 -->
