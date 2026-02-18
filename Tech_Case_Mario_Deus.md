@@ -6,16 +6,13 @@
 
 ### Technical Case Report  
 
+
 ---
 ### Github Repository
+https://github.com/marioandrededeus/vibration-condition-monitoring.git
 
 ### Interactive Application  
-
-A production-ready web interface for both diagnostic modules  
-is publicly available at:
-
 https://vibration-monitoring.streamlit.app/
-
 
 ---
 
@@ -409,7 +406,7 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjc3Mzg1OTQ4LC0yMTEyMjk2NzY1LC02ND
-I5NjkxMjUsMTkyNjUwNTQ1OCwtODk4MTg2MTY5LC01NDM4Mzk2
-NTQsNzQzMjE4NzY5XX0=
+eyJoaXN0b3J5IjpbLTUyNjA4MTgzNywtMjExMjI5Njc2NSwtNj
+QyOTY5MTI1LDE5MjY1MDU0NTgsLTg5ODE4NjE2OSwtNTQzODM5
+NjU0LDc0MzIxODc2OV19
 -->
