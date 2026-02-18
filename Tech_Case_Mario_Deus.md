@@ -253,15 +253,19 @@ Extracted features:
 - Low-frequency band metrics  
 
 <p align="center">
-  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure6_worst_sample.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part2/figure7_harmonics.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
 </p> 
-<p align="center"><em>Figure 7 —  Sensitivity Analysis Across Clustering Tolerances</em></p>
+<p align="center"><em>Figure 7 —  Harmonic amplification</em></p>
 
 ---
 
 ## 3.4 Structural Bias — Sensor and RPM
 
 Sensor distribution was balanced.
+<p align="center">
+  <img src="https://github.com/marioandrededeus/vibration-condition-monitoring/blob/main/reports/part1/figure6_worst_sample.png?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true?raw=true" width="700">
+</p> 
+<p align="center"><em>Figure 8 —  Sensor bias</em></p>
 
 However, rpm revealed structural correlation:
 
@@ -372,6 +376,6 @@ Randall, R. B. (2011).
 Vibration-based Condition Monitoring: Industrial, Aerospace and Automotive Applications. Wiley.
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYwMTU1Mzc1NSwtNTQzODM5NjU0LDc0Mz
+eyJoaXN0b3J5IjpbLTc0NjQ1OTU4NCwtNTQzODM5NjU0LDc0Mz
 IxODc2OV19
 -->
